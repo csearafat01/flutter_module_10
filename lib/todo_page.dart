@@ -11,8 +11,27 @@ class ToDoPage extends StatefulWidget {
 }
 
 class ToDoPageView extends State<ToDoPage> {
-  List toDoList = [{'1':'1'},
-    {'1':'1'}];
+  List toDoList = [];
+  String item = "";
+  toDoInputOnChanged(content){
+    setState(() {
+      item = content;
+    });
+  }
+
+  AddItem(){
+    setState(() {
+      toDoList.add({'item':item});
+    });
+  }
+
+  RemoveItem(index){
+    setState(() {
+      toDoList.removeAt(index);
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +49,13 @@ class ToDoPageView extends State<ToDoPage> {
                 children: [
                   Expanded(
                       flex:70,
-              child: TextFormField(decoration: AppInputDecoration('List'),)),
+              child: TextFormField(onChanged:(content){toDoInputOnChanged(content);},decoration: AppInputDecoration('List'),)),
                   Expanded(
                     flex: 30,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8.0),
                         child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {AddItem();},
                           style: AppButtonStyle(),
                     child: const Text('Add'),
                   ),
@@ -55,10 +74,10 @@ class ToDoPageView extends State<ToDoPage> {
                           children: [
                             Expanded(
                                 flex: 80,
-                                child: Text('Item')),
+                                child: Text(toDoList[index]['item'].toString())),
                             Expanded(
                               flex: 20,
-                                child: TextButton(onPressed: (){},child: Icon(Icons.delete),))
+                                child: TextButton(onPressed: (){RemoveItem(index);},child: Icon(Icons.delete),))
                           ],
                         )
                       )
